@@ -62,14 +62,14 @@ WHERE
 GROUP BY 
     `reserved_at`;
     
-# 仮確定SQL
+# 仮予約SQL
 -- 1. 先に顧客情報をインサート
 INSERT INTO `clinic_system_db`.`customers` (`name`, `phone_number`, `email`, `birth_date`)
 VALUES ('テスト花子', '09099999999', 'test@example.com', '2000-04-01');
 
 -- 2. 発行された顧客IDを使って、15分間の仮確定レコード
 INSERT INTO `clinic_system_db`.`reservations` (`customer_id`, `status`, `reserved_at`, `temporary_expires_at`)
-VALUES (6, 1, '2026-05-26 14:00:00', DATE_ADD(NOW(), INTERVAL 15 MINUTE));
+VALUES (1, 1, '2026-05-26 14:00:00', DATE_ADD(NOW(), INTERVAL 15 MINUTE));
 
 # 本予約確定SQL
 -- 対象の予約ID（例: 1）のステータスを「2:本予約」に変更
@@ -86,7 +86,7 @@ WHERE `id` = 1;
 TRUNCATE TABLE `clinic_system_db`.`reservations`;
 TRUNCATE TABLE `clinic_system_db`.`customers`;
 
--- テストユーザー追加
+-- テスト顧客追加
 INSERT INTO `clinic_system_db`.`customers` 
     (`id`, `name`, `phone_number`, `email`, `birth_date`) 
 VALUES 
