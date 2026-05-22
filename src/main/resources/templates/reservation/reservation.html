@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>無料カウンセリング予約フォーム</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <style>
+
+        .flatpickr-calendar {
+            margin: 0 auto; /* カレンダーを中央寄せ */
+            box-shadow: none !important;
+            border: 2px solid #FFE0E6 !important;
+            background: #FFFFFF !important;
+        }
+        .flatpickr-day.selected, .flatpickr-day.selected:hover {
+            background: #FF2E63 !important;
+            border-color: #FF2E63 !important;
+        }
+        .flatpickr-months .flatpickr-month {
+            color: #FF2E63 !important;
+            fill: #FF2E63 !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            font-weight: bold;
+        }
+
+        /* 時間帯セクションの初期非表示設定 */
+        #time-section {
+            display: none;
+            margin-top: 24px;
+        }
+
+        /* ラジオボタンと送信ボタンのスタイル */
+        .time-label {
+            display: inline-block;
+            margin: 4px;
+            padding: 10px 16px;
+            border: 2px solid #FFE0E6;
+            background: #FAFAFA;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .time-label input {
+            margin-right: 6px;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            max-width: 343px;
+            background: #E0D5D7;
+            color: #FFFFFF;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 24px;
+            pointer-events: none;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+        .btn-submit.active {
+            background: linear-gradient(135deg, #FF6B8B, #FF2E63);
+            pointer-events: auto;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 46, 99, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>無料カウンセリング予約フォーム</h1>
+    
+    <form action="/reservation/customer" method="POST">
+        
+        <h2>ご希望のクリニックを選択</h2>
+        <label><input type="radio" name="clinic" value="新宿院">新宿院</label>
+        
+        <h2>ご希望の日程を選択</h2>
+        <input type="hidden" id="calendar-input" name="selected_date">
+
+        <div id="time-section">
+            <h2>ご希望の時間を選択</h2>
+            <label class="time-label"><input type="radio" name="timeslot" value="10:00" required>10:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="11:00">11:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="12:00">12:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="13:00">13:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="14:00">14:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="15:00">15:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="16:00">16:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="17:00">17:00</label>
+            <label class="time-label"><input type="radio" name="timeslot" value="18:00">18:00</label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">次へ進む</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+
+    <script>
+      const timeSection = document.getElementById('time-section');
+      const submitBtn = document.getElementById('submit-btn');
+      const timeInputs = document.querySelectorAll('input[name="timeslot"]');
+
+      // 1. 明日の日付を計算する（minDate用）
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+// 2. 45日後の日付を計算する（maxDate用）
+const maxValidDate = new Date();
+maxValidDate.setDate(maxValidDate.getDate() + 45);
+
+flatpickr("#calendar-input", {
+  locale: "ja",
+  inline: true,
+  minDate: tomorrow,      // ★今日以前（当日含む）を選択不可にする
+  maxDate: maxValidDate,  // ★45日後より先の未来を選択不可にする
+  dateFormat: "Y-m-d",
+  onChange: function(selectedDates, dateStr, instance) {
+      timeSection.style.display = 'block';
+  }
+});
+
+      // 時間が選ばれたらボタンをピンクにする
+      timeInputs.forEach(input => {
+          input.addEventListener('change', () => {
+              submitBtn.classList.add('active');
+          });
+      });
+    </script>
+
+</body>
+</html>
