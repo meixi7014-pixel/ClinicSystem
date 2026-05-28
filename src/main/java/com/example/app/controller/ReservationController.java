@@ -28,7 +28,7 @@ public class ReservationController {
 	@GetMapping
 	public String showReservationPage(HttpSession session) {
 		session.invalidate();
-		return "reservation";
+		return "reservation/reservation";
 	}
 
 	// ②顧客情報入力画面
@@ -46,7 +46,7 @@ public class ReservationController {
 		session.setAttribute("selectedClinic", clinic);
 
 		model.addAttribute("customer", new Customer());
-		return "customer";
+		return "reservation/customer";
 	}
 
 	// ③情報確認画面
@@ -57,7 +57,7 @@ public class ReservationController {
 			HttpSession session, Model model) {
 		// 入力不備がある場合は②に戻る
 		if (result.hasErrors()) {
-			return "customer";
+			return "reservation/customer";
 		}
 
 		// 情報をセッションに保存
@@ -70,7 +70,7 @@ public class ReservationController {
 		model.addAttribute("reservation", reservation);
 		model.addAttribute("customer", customer);
 
-		return "confirm";
+		return "reservation/confirm";
 
 	}
 
@@ -90,7 +90,7 @@ public class ReservationController {
 
 		session.invalidate();
 
-		return "complete";
+		return "reservation/complete";
 
 	}
 

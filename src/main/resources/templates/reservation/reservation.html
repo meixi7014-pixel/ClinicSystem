@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
     
     <style>
         .flatpickr-calendar {
-            margin: 0 auto; /* カレンダーを中央寄せ */
+            margin: 0 auto;
             box-shadow: none !important;
             border: 2px solid #FFE0E6 !important;
             background: #FFFFFF !important;
@@ -25,19 +25,16 @@
             font-weight: bold;
         }
 
-        /* ★新設：カレンダーセクションの初期非表示設定 */
         #date-section {
             display: none;
             margin-top: 24px;
         }
 
-        /* 時間帯セクションの初期非表示設定 */
         #time-section {
             display: none;
             margin-top: 24px;
         }
 
-        /* ラジオボタンと送信ボタンのスタイル */
         .time-label {
             display: inline-block;
             margin: 4px;
@@ -81,7 +78,7 @@
 
     <h1>無料カウンセリング予約フォーム</h1>
     
-    <form action="/reservation/customer" method="POST">
+    <form th:action="@{/reservation/customer}" method="POST">
         
         <h2>ご希望のクリニックを選択</h2>
         <label><input type="radio" name="clinic" value="新宿院" class="clinic-input">新宿院</label>
@@ -111,23 +108,18 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 
     <script>
-      // ★新設：要素の取得
       const clinicInputs = document.querySelectorAll('.clinic-input');
       const dateSection = document.getElementById('date-section');
-      
       const timeSection = document.getElementById('time-section');
       const submitBtn = document.getElementById('submit-btn');
       const timeInputs = document.querySelectorAll('input[name="timeslot"]');
 
-      // 1. 明日の日付を計算する（minDate用）
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 
-      // 2. 45日後の日付を計算する（maxDate用）
       const maxValidDate = new Date();
       maxValidDate.setDate(maxValidDate.getDate() + 45);
 
-      // ★新設：クリニックのラジオボタンが選択されたらカレンダー枠を表示する
       clinicInputs.forEach(input => {
           input.addEventListener('change', () => {
               dateSection.style.display = 'block';
@@ -137,15 +129,14 @@
       flatpickr("#calendar-input", {
         locale: "ja",
         inline: true,
-        minDate: tomorrow,      // ★今日以前（当日含む）を選択不可にする
-        maxDate: maxValidDate,  // ★45日後より先の未来を選択不可にする
+        minDate: tomorrow,
+        maxDate: maxValidDate,
         dateFormat: "Y-m-d",
         onChange: function(selectedDates, dateStr, instance) {
             timeSection.style.display = 'block';
         }
       });
 
-      // 時間が選ばれたらボタンをピンクにする
       timeInputs.forEach(input => {
           input.addEventListener('change', () => {
               submitBtn.classList.add('active');

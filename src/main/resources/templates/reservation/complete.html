@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>予約完了</title>
 </head>
 <body>
-    <h1></h1>
+    <h1>無料カウンセリング予約フォーム</h1>
     <h2>予約が確定しました</h2>
-    <p>ご希望のクリニック：新宿院</p>
-    <p>ご希望の日程：2026年06月26日</p>
-    <p>ご希望の時間：14:00～（1時間）</p>
+    <p>ご予約ありがとうございました。ご来院を心よりお待ちしております。</p>
+    
+    <br>
+    <h3>確定したご予約内容</h3>
+    <p>ご希望のクリニック：<span th:text="${session.selectedClinic}">新宿院</span></p>
+    <p>ご希望の日程：<span th:text="${#temporals.format(session['scopedTarget.reservation'].reservedAt, 'yyyy年MM月dd日')}">2026年06月26日</span></p>
+    <p>ご希望の時間：<span th:text="${#temporals.format(session['scopedTarget.reservation'].reservedAt, 'HH:mm～（1時間）')}">14:00～（1時間）</span></p>
+    
+    <p style="margin-top: 30px;"><a th:href="@{/reservation}">トップページ（予約日程選択）へ戻る</a></p>
 </body>
 </html>

@@ -1,76 +1,84 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>無料カウンセリング予約フォーム</title>
     <style>
-    .notes-title {
-        font-weight: bold;
-        font-size: 13px;
-        margin-bottom: 6px;
-        color: #4A3E41;
-    }
-    .notes-box {
-        background-color: #FAFAFA;     /* 薄いグレーの背景 */
-        border: 2px solid #FFE0E6;     /* さわやかなピンクの枠線 */
-        border-radius: 8px;            /* 角丸 */
-        padding: 10px 12px;            /* 内側の余白 */
-        font-size: 11px;               /* 小さめの文字サイズ */
-        line-height: 1.5;              /* 行間 */
-        
-        /* ★ここがポイント：高さを4行分（11px * 1.5行間 * 4行 ≒ 66px）に制限 */
-        height: 66px;                  
-        overflow-y: scroll;            /* 縦方向のスクロールを有効にする */
-        
-        color: #66585A;
-    }
-</style>
+        .notes-title { font-weight: bold; font-size: 13px; margin-bottom: 6px; color: #4A3E41; }
+        .notes-box {
+            background-color: #FAFAFA;
+            border: 2px solid #FFE0E6;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            height: 66px;
+            overflow-y: scroll;
+            color: #66585A;
+        }
+        .btn-submit-disabled {
+            background-color: #E0D5D7;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <h1>無料カウンセリング予約フォーム</h1>
 
     <h2>まだ予約は完了しておりません</h2>
     <p>入力内容をご確認ください</p>
+    
     <h3>ご希望のクリニック</h3>
-    <p>新宿院</p>
+    <p th:text="${clinic}">新宿院</p>
+    
     <h3>ご希望の日程</h3>
-    <p>2026年06月26日</p>
+    <p th:text="${#temporals.format(reservation.reservedAt, 'yyyy年MM月dd日')}">2026年06月26日</p>
+    
     <h3>ご希望の時間</h3>
-    <p>14:00～（1時間）</p>
+    <p th:text="${#temporals.format(reservation.reservedAt, 'HH:mm～（1時間）')}">14:00～（1時間）</p>
+    
     <h3>お名前</h3>
-    <p>佐藤花子</p>
+    <p th:text="${customer.name}">佐藤花子</p>
+    
     <h3>生年月日</h3>
-    <p>1995年06月26日</p>
+    <p th:text="${customer.birthDate.substring(0,4) + '年' + customer.birthDate.substring(4,6) + '月' + customer.birthDate.substring(6,8) + '日'}">1995年06月26日</p>
+    
     <h3>電話番号</h3>
-    <p>09012345678</p>
+    <p th:text="${customer.phoneNumber}">09012345678</p>
+    
     <h3>メールアドレス</h3>
-    <p>example@mail.com</p>
+    <p th:text="${customer.email}">example@mail.com</p>
+    
     <h3>お申込み上の注意</h3>
-<div class="notes-box">
-本予約フォームは、Javaクリニック（以下、当院）の無料カウンセリング専用です。お申込みにあたり、以下の注意事項および免責事項を必ずご確認ください。<br>
-<br>
-1. ご利用対象者について<br>
-・当院での無料カウンセリングのご利用は、お一人様1回限り、かつ当院を初めてご利用される方のみとさせていただきます。過去に当院（他院を含む）をご利用されたことがある場合は、対象外となります。<br>
-<br>
-2. 未成年の方のご来院およびご契約について<br>
-当院では、未成年のお客様の安全を守るため、ご年齢に応じて以下のご来院・ご契約規約を設けております。<br>
-・15歳以下の方：カウンセリングおよびご契約の際、親権者様の同伴が必須となります。<br>
-・16歳および17歳の方：原則、親権者様同伴でのご来院をお願いしております。万が一、親権者様の同席ができない場合は、親権者様が署名・捺印された「親権者同意書」をご持参いただくことで、単独でのカウンセリング受診が可能です。ただし、ご契約時には当院スタッフより親権者様へお電話にて確認をさせていただきます。<br>
-・18歳未満の方：上記に基づき、適切な同伴または書類のご準備がない場合、当日のカウンセリングおよび施術をお断りする場合がございます。<br>
-<br>
-3. キャンセルおよび遅刻について<br>
-・ご予約の変更・キャンセルを希望される場合は、予約日時の前日までに当院受付までご連絡ください。<br>
-・無断キャンセルや度重なる直前キャンセルが行われた場合、次回以降のご予約をお断りする場合がございます。<br>
-<br>
-4. 免責事項<br>
-・本サイトは学校の課題用に構築された模擬システムであり、登場するクリニック、規約、サービス等はすべて架空のものです。実際の予約・契約・医療行為は発生いたしません。
-</div>
+    <div class="notes-box">
+        本予約フォームは、Javaクリニック（以下、当院）の無料カウンセリング専用です。お申込みにあたり、以下の注意事項および免責事項を必ずご確認ください。<br><br>
+        1. ご利用対象者について<br>・当院での無料カウンセリングのご利用は、お一人様1回限り、かつ当院を初めてご利用される方のみとさせていただきます。<br><br>
+        2. 未成年の方のご来院およびご契約について<br>当院では、未成年のお客様の安全を守るため、ご年齢に応じて以下のご来院・ご契約規約を設けております。<br>・15歳以下の方：カウンセリングおよびご契約の際、親権者様の同伴が必須となります。<br>・16歳および17歳の方：原則、親権者様同伴でのご来院をお願いしております。<br><br>
+        3. キャンセルおよび遅刻について<br>・ご予約の変更・キャンセルを希望される場合は、予約日時の前日までに当院受付までご連絡ください。<br><br>
+        4. 免責事項<br>・本サイトは学校の課題用に構築された模擬システムであり、登場するクリニック、規約、サービス等はすべて架空のものです。実際の予約・契約・医療行為は発生いたしません。
+    </div>
+    
     <h2>上記注意事項に同意していただけますか？</h2>
-    <label><input type="checkbox">上記に同意する</label>
+    <form th:action="@{/reservation/complete}" method="POST">
+        <label><input type="checkbox" id="agree-check">上記に同意する</label>
+        <p><input type="submit" id="submit-btn" value="この内容で予約する" class="btn-submit-disabled" disabled></p>
+    </form>
+    
+    <p><a th:href="@{/reservation/customer}">お客様情報入力へ戻る</a></p>
 
-    <p><input type="submit" value="この内容で予約する"></p>
-    <p><a href="reservation.html">お客様情報入力へ戻る</a></p>
-
+    <script>
+        // 同意チェックボックスにチェックがついたらボタンを押せるように制御
+        const agreeCheck = document.getElementById('agree-check');
+        const submitBtn = document.getElementById('submit-btn');
+        agreeCheck.addEventListener('change', () => {
+            submitBtn.disabled = !agreeCheck.checked;
+            if(agreeCheck.checked) {
+                submitBtn.classList.remove('btn-submit-disabled');
+            } else {
+                submitBtn.classList.add('btn-submit-disabled');
+            }
+        });
+    </script>
 </body>
 </html>
