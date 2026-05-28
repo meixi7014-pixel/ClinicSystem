@@ -2,6 +2,9 @@ package com.example.app.domain;
 
 import java.time.LocalDateTime;
 
+import lombok.Data;
+
+@Data
 public class Reservation {
 
 	private Integer id;

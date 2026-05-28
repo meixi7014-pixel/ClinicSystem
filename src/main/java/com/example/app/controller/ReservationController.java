@@ -40,6 +40,8 @@ public class ReservationController {
 			HttpSession session, Model model) {
 		LocalDateTime reservedAt = LocalDateTime.parse(selectedDate + "T" + timeslot);
 		Reservation reservation = new Reservation();
+		reservation.setReservedAt(reservedAt);
+
 		session.setAttribute("scopedTarget.reservation", reservation);
 		session.setAttribute("selectedClinic", clinic);
 
@@ -61,7 +63,7 @@ public class ReservationController {
 		// 情報をセッションに保存
 		session.setAttribute("scopedTarget.customer", customer);
 
-		Reservation reservation = (Reservation) session.getAttribute("scopedTarget.customer");
+		Reservation reservation = (Reservation) session.getAttribute("scopedTarget.reservation");
 		String clinic = (String) session.getAttribute("selectedClinic");
 
 		model.addAttribute("clinic", clinic);
@@ -80,6 +82,16 @@ public class ReservationController {
 		Reservation reservation = (Reservation) session.getAttribute("scopedTarget.reservation");
 
 		// セッションが切れた場合はTOPにリダイレクト
+		if (customer == null || reservation == null) {
+			return "redirect:/reservation";
+		}
+
+		reservationService.registerBooking(customer, reservation);
+
+		session.invalidate();
+
+		return "complete";
+
 	}
 
 }
