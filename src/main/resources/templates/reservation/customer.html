@@ -3,48 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>無料カウンセリング予約フォーム</title>
-    <style>
-        .error-message {
-            color: #FF2E63;
-            font-size: 13px;
-            font-weight: bold;
-            margin-top: 4px;
-            display: block;
-        }
-    </style>
+    <title>お客様情報入力 | Javaクリニック</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/reservation/style.css}">
 </head>
 <body>
-    <h1>無料カウンセリング予約フォーム</h1>
-    
-    <p>ご希望のクリニック：<span th:text="${session.selectedClinic}">新宿院</span></p>
-    <p>ご希望の日程：<span th:text="${#temporals.format(session['scopedTarget.reservation'].reservedAt, 'yyyy年MM月dd日')}">2026年06月26日</span></p>
-    <p>ご希望の時間：<span th:text="${#temporals.format(session['scopedTarget.reservation'].reservedAt, 'HH:mm～（1時間）')}">14:00～（1時間）</span></p>
+    <div class="container">
+        <div class="main-title">
+            <h1>お客様情報の入力</h1>
+            <span class="en">Customer Information</span>
+        </div>
+        
+        <div class="form-section">
+            <p>ご希望のクリニック：<span th:text="${session.selectedClinic}">新宿院</span></p>
+            <p>ご希望の日程：<span th:text="${#temporals.format(session['scopedTarget.reservation'].reservedAt, 'yyyy年MM月dd日')}">2026年06月26日</span></p>
+            <p>ご希望の時間：<span th:text="${#temporals.format(session['scopedTarget.reservation'].reservedAt, 'HH:mm～（1時間）')}">14:00～（1時間）</span></p>
+        </div>
 
-    <form th:action="@{/reservation/confirm}" th:object="${customer}" method="POST">
-        
-        <h2>お名前</h2>
-        <input type="text" th:field="*{name}" placeholder="佐藤花子">
-        <span class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-        
-        <h2>生年月日</h2>
-        <input type="number" th:field="*{birthDate}" placeholder="19950626">
-        <span class="error-message" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></span>
-        <span class="error-message" th:if="${#fields.hasErrors('validBirthDate')}" th:errors="*{validBirthDate}"></span>
-        
-		<h2>電話番号</h2>
-        <input type="tel" th:field="*{phoneNumber}" placeholder="09012345678">
-        <span class="error-message" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
-        <span class="error-message" th:if="${#fields.hasErrors('uniquePhoneNumber')}" th:errors="*{uniquePhoneNumber}"></span>
-        
-        <h2>メールアドレス</h2>
-        <input type="email" th:field="*{email}" placeholder="example@mail.com">
-        <span class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-        <span class="error-message" th:if="${#fields.hasErrors('uniqueEmail')}" th:errors="*{uniqueEmail}"></span>
+        <form th:action="@{/reservation/confirm}" th:object="${customer}" method="POST">
+            
+            <h2>お名前</h2>
+            <input type="text" th:field="*{name}" placeholder="佐藤花子">
+            <span class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            
+            <h2>生年月日</h2>
+            <input type="number" th:field="*{birthDate}" placeholder="19950626">
+            <span class="error-message" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('validBirthDate')}" th:errors="*{validBirthDate}"></span>
+            
+            <h2>電話番号</h2>
+            <input type="tel" th:field="*{phoneNumber}" placeholder="09012345678">
+            <span class="error-message" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('uniquePhoneNumber')}" th:errors="*{uniquePhoneNumber}"></span>
+            
+            <h2>メールアドレス</h2>
+            <input type="email" th:field="*{email}" placeholder="example@mail.com">
+            <span class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('uniqueEmail')}" th:errors="*{uniqueEmail}"></span>
 
-        <p><input type="submit" value="確認画面へ進む"></p>
-        <p><a th:href="@{/reservation}">ご予約日程を再選択する</a></p>
-    </form>
-
+            <div class="btn-container">
+                <input type="submit" value="確認画面へ進む">
+            </div>
+            
+            <div class="link-back-container">
+                <a th:href="@{/reservation}" class="link-back">ご予約日程を再選択する</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
