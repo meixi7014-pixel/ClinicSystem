@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エラー | Javaクリニック</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 既存の共通CSSを適用してデザインを統一 -->
+    <link rel="stylesheet" th:href="@{/css/reservation/style.css}">
+</head>
+<body>
+    <div class="container" style="text-align: center; padding: 60px 40px;">
+        <div class="main-title">
+            <h1 style="color: #D9534F;">エラーが発生しました</h1>
+            <span class="en" style="color: #D9534F;">Error</span>
+        </div>
+        
+        <p style="font-size: 15px; color: #4A3B32; font-weight: 500; margin-bottom: 16px;">
+            申し訳ございません。手続きの途中で問題が発生したか、<br>セッションの有効期限が切れた可能性があります。
+        </p>
+        
+        <p style="font-size: 13px; color: #888888; line-height: 1.6; margin-bottom: 40px;">
+            お手数ですが、もう一度最初からやり直していただくか、<br>しばらく経ってからアクセスをお試しください。
+        </p>
+        
+        <div class="link-back-container">
+            <a th:href="@{/reservation}" class="link-back" style="font-size: 14px; color: #C5A880; border-color: #C5A880;">
+                ▸ トップページ（予約日程選択）へ戻る
+            </a>
+        </div>
+    </div>
+</body>
+</html>
