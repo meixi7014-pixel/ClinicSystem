@@ -38,4 +38,14 @@ public class ReservationService {
 
 		reservationMapper.insertReservation(reservation);
 	}
+
+	// 電話番号の重複チェック
+	public boolean isPhoneNumberExists(String phoneNumber) {
+		return customerMapper.countByPhoneNumber(phoneNumber) > 0;
+	}
+
+	//メールアドレスの重複チェック
+	public boolean isEmailExists(String email) {
+		return customerMapper.countByEmail(email) > 0;
+	}
 }

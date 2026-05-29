@@ -5,6 +5,14 @@
 
 <mapper namespace="com.example.app.mapper.CustomerMapper">
 
+<select id="countByPhoneNumber" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM customers WHERE phone_number = #{phoneNumber}
+  </select>
+
+  <select id="countByEmail" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM customers WHERE email = #{email}
+  </select>
+
   <insert id="insertCustomer" 
           parameterType="com.example.app.domain.Customer" 
           useGeneratedKeys="true" 

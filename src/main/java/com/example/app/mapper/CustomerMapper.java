@@ -9,4 +9,8 @@ public interface CustomerMapper {
 
 	void insertCustomer(Customer customer);
 
+	// 重複件数を取得
+	int countByPhoneNumber(String phoneNumber);
+
+	int countByEmail(String email);
 }

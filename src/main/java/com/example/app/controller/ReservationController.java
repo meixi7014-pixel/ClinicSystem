@@ -74,24 +74,31 @@ public class ReservationController {
 
 	}
 
-	// ④完了画面
-
+	//④完了画面
 	@PostMapping("/complete")
-	public String handleComplete(HttpSession session) {
+	public String handleComplete(HttpSession session, Model model) { // ★引数に Model を追加
 		Customer customer = (Customer) session.getAttribute("scopedTarget.customer");
 		Reservation reservation = (Reservation) session.getAttribute("scopedTarget.reservation");
+		String clinic = (String) session.getAttribute("selectedClinic");
 
-		// セッションが切れた場合はTOPにリダイレクト
+		// ★ご希望の挙動：セッション切れ（データが保持されていない）の場合はTOPにリダイレクト
 		if (customer == null || reservation == null) {
 			return "redirect:/reservation";
 		}
 
+		// サービス層を呼び出してDBに登録
 		reservationService.registerBooking(customer, reservation);
 
-		session.invalidate();
+		// 画面（complete.html）で表示するために、データをModelへ引越しさせる
+		model.addAttribute("completeClinic", clinic);
+		model.addAttribute("completeReservation", reservation);
+
+		// 登録が正常に完了したので、次の予約に備えてセッションから予約データを削除する
+		session.removeAttribute("scopedTarget.customer");
+		session.removeAttribute("scopedTarget.reservation");
+		session.removeAttribute("selectedClinic");
 
 		return "reservation/complete";
-
 	}
 
 }

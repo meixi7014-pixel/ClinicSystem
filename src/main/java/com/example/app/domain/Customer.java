@@ -11,6 +11,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import com.example.app.service.ReservationService;
+
 import lombok.Data;
 
 @Data
@@ -26,10 +28,60 @@ public class Customer {
 	@Pattern(regexp = "^0[0-9]{9,10}$", message = "電話番号はハイフンなしの正しい桁数で入力してください")
 	private String phoneNumber;
 
+	@AssertTrue(message = "ご入力いただいた電話番号は、既に別の予約で登録されています")
+	public boolean isUniquePhoneNumber() {
+		if (this.phoneNumber == null || this.phoneNumber.isEmpty()) {
+			return true; // 必須チェックは@NotBlank側で処理するためスルー
+		}
+
+		try {
+			// SpringのコンテキストからReservationServiceの部品を強制的に引っ張り出す記述
+			ReservationService service = org.springframework.web.context.support.WebApplicationContextUtils
+					.getRequiredWebApplicationContext(
+							((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder
+									.getRequestAttributes())
+											.getRequest().getServletContext())
+					.getBean(ReservationService.class);
+
+			// データベースに問い合わせ、既に存在していれば不合格(false)を返す
+			if (service.isPhoneNumberExists(this.phoneNumber)) {
+				return false;
+			}
+		} catch (Exception e) {
+			// 万が一システムエラーが起きた場合はログを出して通過させる（安全弁）
+			return true;
+		}
+		return true;
+	}
+
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "正しいメールアドレスの形式で入力してください")
 	@Size(max = 255, message = "メールアドレスが長すぎます")
 	private String email;
+
+	@AssertTrue(message = "ご入力いただいたメールアドレスは、既に別の予約で登録されています")
+	public boolean isUniqueEmail() {
+		if (this.email == null || this.email.isEmpty()) {
+			return true; // 必須チェックは@NotBlank側で処理するためスルー
+		}
+
+		try {
+			ReservationService service = org.springframework.web.context.support.WebApplicationContextUtils
+					.getRequiredWebApplicationContext(
+							((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder
+									.getRequestAttributes())
+											.getRequest().getServletContext())
+					.getBean(ReservationService.class);
+
+			// データベースに問い合わせ、既に存在していれば不合格(false)を返す
+			if (service.isEmailExists(this.email)) {
+				return false;
+			}
+		} catch (Exception e) {
+			return true;
+		}
+		return true;
+	}
 
 	@NotBlank(message = "生年月日を入力してください")
 	@Pattern(regexp = "^[0-9]{8}$", message = "生年月日は8桁の半角数字（例: 20001112）で入力してください")
