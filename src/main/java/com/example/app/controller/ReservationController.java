@@ -73,9 +73,7 @@ public class ReservationController {
 		Reservation reservation = (Reservation) session.getAttribute("scopedTarget.reservation");
 		String clinic = (String) session.getAttribute("selectedClinic");
 
-		// ==========================================================================
-		// ★追加：今日時点での年齢計算ロジック（17歳以下チェック）
-		// ==========================================================================
+		// 17歳以下に同意書表示
 		boolean isUnder18 = false;
 		if (customer.getBirthDate() != null && customer.getBirthDate().length() == 8) {
 			try {
@@ -112,7 +110,7 @@ public class ReservationController {
 		Reservation reservation = (Reservation) session.getAttribute("scopedTarget.reservation");
 		String clinic = (String) session.getAttribute("selectedClinic");
 
-		// ガード：もしセッションが切れて「予約日時」すら消えていた場合、強制的に1ページ目に飛ばす
+		// もしセッションが切れて「予約日時」すら消えていた場合、強制的に1ページ目に飛ばす
 		if (reservation == null) {
 			return "redirect:/reservation";
 		}
@@ -122,7 +120,7 @@ public class ReservationController {
 			customer = new Customer();
 		}
 
-		// ★追加：customer.htmlの上部にあるクリニック・日時表示がエラーで割れないように積み直す
+		// customer.htmlの上部にあるクリニック・日時表示がエラーで割れないように積み直す
 		model.addAttribute("clinic", clinic);
 		model.addAttribute("reservation", reservation);
 		model.addAttribute("customer", customer);

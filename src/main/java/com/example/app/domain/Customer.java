@@ -73,7 +73,7 @@ public class Customer {
 											.getRequest().getServletContext())
 					.getBean(ReservationService.class);
 
-			// データベースに問い合わせ、既に存在していれば不合格(false)を返す
+			// データベースに問い合わせ、既に存在していればfalseを返す
 			if (service.isEmailExists(this.email)) {
 				return false;
 			}
