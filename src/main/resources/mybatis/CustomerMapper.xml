@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.app.mapper.CustomerMapper">
+
+<select id="countByPhoneNumber" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM customers WHERE phone_number = #{phoneNumber}
+  </select>
+
+  <select id="countByEmail" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM customers WHERE email = #{email}
+  </select>
+
+  <insert id="insertCustomer" 
+          parameterType="com.example.app.domain.Customer" 
+          useGeneratedKeys="true" 
+          keyProperty="id">
+          
+    INSERT INTO customers (
+      name, 
+      phone_number, 
+      email, 
+      birth_date
+    ) VALUES (
+      #{name}, 
+      #{phoneNumber}, 
+      #{email}, 
+      #{birthDate}
+    )
+    
+  </insert>
+
+</mapper>
