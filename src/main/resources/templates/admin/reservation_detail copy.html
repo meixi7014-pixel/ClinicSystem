@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>今週のご予約空き状況</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: #007bbb;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        /* カレンダーのテーブルスタイル */
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .calendar-table th, .calendar-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 5px;
+            vertical-align: middle;
+        }
+        /* ヘッダー（曜日）のスタイル */
+        .calendar-table th {
+            background-color: #f0f4f8;
+            font-weight: bold;
+            width: 12%;
+        }
+        .calendar-table th:first-child {
+            background-color: #e8eef4;
+            width: 10%; /* 時間列 */
+        }
+        /* 土日の色分け */
+        .day-0 { color: #dd4b39; } /* 日曜 */
+        .day-6 { color: #007bbb; } /* 土曜 */
+
+        /* 時間列のスタイル */
+        .time-col {
+            font-weight: bold;
+            background-color: #fafafa;
+            font-size: 0.9rem;
+        }
+        /* 予約枠の状態スタイル */
+        .status {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 4px 0;
+            border-radius: 4px;
+        }
+        .status.available {
+            color: #28a745;
+            background-color: #e8f5e9;
+            cursor: pointer;
+        }
+        .status.available:hover {
+            background-color: #c8e6c9;
+        }
+        .status.booked {
+            color: #999;
+            background-color: #f5f5f5;
+        }
+        .status.closed {
+            color: #e06666;
+            background-color: #fce8e6;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>カウンセリングご予約空き状況</h2>
+    <div class="subtitle" id="week-range">対象期間：計算中...</div>
+
+    <table class="calendar-table">
+        <thead>
+            <tr>
+                <th>時間</th>
+                <th id="th-0">日</th>
+                <th id="th-1">月</th>
+                <th id="th-2">火</th>
+                <th id="th-3">水</th>
+                <th id="th-4">木</th>
+                <th id="th-5">金</th>
+                <th id="th-6">土</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body">
+            </tbody>
+    </table>
+
+    <script>
+        // --- 1. カレンダーの日付と曜日ヘッダーの設定 ---
+        const today = new Date();
+        const currentDay = today.getDay(); // 0:日〜6:土
+
+        // 今週の日曜日を基準にする
+        const sunday = new Date(today);
+        sunday.setDate(today.getDate() - currentDay);
+
+        // タイトルの期間（日～土）を表示
+        const saturday = new Date(sunday);
+        saturday.setDate(sunday.getDate() + 6);
+        document.getElementById('week-range').textContent = `対象期間：${sunday.getMonth() + 1}/${sunday.getDate()}（日）～ ${saturday.getMonth() + 1}/${saturday.getDate()}（土）`;
+
+        // 各曜日のヘッダーに「月/日」を埋め込む
+        const weekLabels = ['日', '月', '火', '水', '木', '金', '土'];
+        for (let i = 0; i < 7; i++) {
+            const targetDate = new Date(sunday);
+            targetDate.setDate(sunday.getDate() + i);
+            
+            const th = document.getElementById(`th-${i}`);
+            th.innerHTML = `${targetDate.getMonth() + 1}/${targetDate.getDate()}<br><span class="day-${i}">${weekLabels[i]}</span>`;
+        }
+
+        // --- 2. 10時～19時の時間枠とダミー予約の生成 ---
+        const startHour = 10;
+        const endHour = 19;
+        const calendarBody = document.getElementById('calendar-body');
+
+        // ダミーの予約データ（[曜日0-6, 時間] の組み合わせで、どこを「満席(booked)」にするか指定）
+        // 例: [1, 10] は月曜の10時を満席にする
+        const dummyBookedSlots = [
+            [1, 10], [1, 14], [1, 15], // 月曜
+            [2, 11], [2, 16],          // 火曜
+            [3, 13], [3, 14], [3, 18], // 水曜
+            [4, 10], [4, 15],          // 木曜
+            [5, 11], [5, 12], [5, 17], // 金曜
+            [6, 10], [6, 13], [6, 14], [6, 15], [6, 16] // 土曜
+        ];
+
+        // 時間ごとにループを回して行(tr)を作成
+        for (let hour = startHour; hour <= endHour; hour++) {
+            const row = document.createElement('tr');
+
+            // 時間列を追加 (例: 10:00)
+            const timeTd = document.createElement('td');
+            timeTd.className = 'time-col';
+            timeTd.textContent = `${hour}:00`;
+            row.appendChild(timeTd);
+
+            // 日〜土までの7日間分のマス(td)を追加
+            for (let day = 0; day < 7; day++) {
+                const cell = document.createElement('td');
+
+                if (day === 0) {
+                    // 日曜日は「休診」として扱うダミー
+                    cell.innerHTML = '<span class="status closed">休診</span>';
+                } else {
+                    // ダミーデータに一致するかチェック（満席判定）
+                    const isBooked = dummyBookedSlots.some(slot => slot[0] === day && slot[1] === hour);
+
+                    if (isBooked) {
+                        cell.innerHTML = '<span class="status booked">×</span>';
+                    } else {
+                        cell.innerHTML = '<span class="status available">◎</span>';
+                    }
+                }
+                row.appendChild(cell);
+            }
+
+            // 生成した行をテーブルに追加
+            calendarBody.appendChild(row);
+        }
+    </script>
+
+</body>
+</html>
