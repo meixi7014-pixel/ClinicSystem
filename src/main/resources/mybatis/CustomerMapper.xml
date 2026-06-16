@@ -12,6 +12,17 @@
   <select id="countByEmail" parameterType="string" resultType="int">
     SELECT COUNT(*) FROM customers WHERE email = #{email}
   </select>
+  
+  <select id="findAllCustomers" resultType="com.example.app.domain.Customer">
+        SELECT 
+            id, 
+            name, 
+            phone_number AS phoneNumber, 
+            email, 
+            birth_date AS birthDate 
+        FROM customers
+        ORDER BY id ASC
+    </select>
 
   <insert id="insertCustomer" 
           parameterType="com.example.app.domain.Customer" 

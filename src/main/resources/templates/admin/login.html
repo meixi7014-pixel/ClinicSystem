@@ -1,14 +1,60 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顧客管理システム</title>
+    <title>顧客管理システム - ログイン</title>
+    <style>
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>顧客管理システム</h1>
     <h2>ログイン</h2>
-    <p>管理者ID<br> <input type="text"></p>
-    <p>ログインパスワード<br> <input type="password"></p>
+    
+    <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+
+    <form th:action="@{/admin/login}" method="post">
+        <p>
+            管理者ID<br> 
+            <input type="text" name="adminId" id="adminId" th:value="${typedId}">
+        </p>
+        <p>
+            ログインパスワード<br> 
+            <input type="password" name="password" id="password">
+        </p>
+        <p>
+            <button type="submit" id="submitBtn" disabled>ログイン</button>
+        </p>
+    </form>
+
+    <script>
+        const adminIdInput = document.getElementById('adminId');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function toggleButtonState() {
+            // 両方の入力欄から前後の空白を除去した値を取得
+            const adminIdValue = adminIdInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+
+            // 両方が空欄でない場合のみ disabled を解除(false)する
+            if (adminIdValue !== "" && passwordValue !== "") {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        // 入力されるたびに判定関数を実行
+        adminIdInput.addEventListener('input', toggleButtonState);
+        passwordInput.addEventListener('input', toggleButtonState);
+
+        // 画面表示時や、エラーで戻ってきた際に入力値が残っていた場合の初期判定
+        window.addEventListener('DOMContentLoaded', toggleButtonState);
+    </script>
 </body>
 </html>
