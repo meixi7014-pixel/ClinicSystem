@@ -3,9 +3,9 @@ package com.example.app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration;
-import org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration; // 💡 追記
+import org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration;
 
-// 💡 2つのクラスをexclude（除外）指定します
+// 💡 以下の2つのクラスを除外（exclude）設定に指定します
 @SpringBootApplication(exclude = {
 		SecurityAutoConfiguration.class,
 		UserDetailsServiceAutoConfiguration.class

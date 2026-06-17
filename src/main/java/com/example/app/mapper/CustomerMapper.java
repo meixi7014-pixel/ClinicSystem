@@ -17,4 +17,6 @@ public interface CustomerMapper {
 	int countByEmail(String email);
 
 	List<Customer> findAllCustomers();
+
+	Customer findCustomerById(Integer id);
 }

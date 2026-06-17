@@ -23,6 +23,16 @@
         FROM customers
         ORDER BY id ASC
     </select>
+    
+    <select id="findCustomerById" parameterType="int" resultType="com.example.app.domain.Customer">
+        SELECT 
+            id, 
+            name, 
+            phone_number AS phoneNumber, 
+            email, 
+            birth_date AS birthDate FROM customers
+        WHERE id = #{id}
+  </select>
 
   <insert id="insertCustomer" 
           parameterType="com.example.app.domain.Customer" 

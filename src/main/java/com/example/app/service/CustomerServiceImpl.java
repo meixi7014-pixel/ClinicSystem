@@ -17,4 +17,9 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<Customer> getAllCustomers() {
 		return customerMapper.findAllCustomers();
 	}
+
+	@Override
+	public Customer getCustomerById(Integer id) {
+		return customerMapper.findCustomerById(id);
+	}
 }
