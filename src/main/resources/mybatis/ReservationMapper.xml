@@ -4,7 +4,28 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.app.mapper.ReservationMapper">
-
+	<select id="findWeeklyReservationCounts" resultType="map">
+    SELECT 
+        DATE_FORMAT(reserved_at, '%Y%m%d') AS reserveDate,
+        HOUR(reserved_at) AS reserveHour,
+        COUNT(*) AS reservationCount
+    FROM `clinic_system_db`.`reservations`
+    WHERE <![CDATA[
+        reserved_at >= #{startDate} AND reserved_at < #{endDate}
+    ]]>
+    GROUP BY DATE_FORMAT(reserved_at, '%Y%m%d'), HOUR(reserved_at)
+  </select>
+  <select id="findReservationDetailsByDate" parameterType="string" resultType="map">
+    SELECT 
+        r.id AS id,
+        r.customer_id AS customer_id,
+        c.name AS customer_name,
+        DATE_FORMAT(r.reserved_at, '%H:%i') AS reserve_time
+    FROM `clinic_system_db`.`reservations` r
+    INNER JOIN `clinic_system_db`.`customers` c ON r.customer_id = c.id
+    WHERE DATE(r.reserved_at) = #{targetDate}
+    ORDER BY r.reserved_at ASC
+  </select>
   <insert id="insertReservation" 
           parameterType="com.example.app.domain.Reservation">
           

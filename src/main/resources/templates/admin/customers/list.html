@@ -15,13 +15,17 @@
             <tr>
                 <th>ID</th>
                 <th>氏名</th>
+				<th>電話番号</th>
+				<th>メールアドレス</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="customer : ${customers}">
                 <td th:text="${customer.id}"></td>
-                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.name} + ' 様'"></td>
+				<td th:text="${customer.phoneNumber}"></td>
+				<td th:text="${customer.email}"></td>
                 <td><a th:href="@{/admin/customers/{id}(id=${customer.id})}">顧客詳細</a></td>
             </tr>
         </tbody>

@@ -1,38 +1,61 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予約管理システム</title>
+    <title>予約詳細一覧</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; color: #333; }
+        h1 { color: #007bbb; font-size: 1.8rem; }
+        h2 { font-size: 1.3rem; margin-top: 20px; color: #555; }
+        .back-link { margin-bottom: 20px; display: inline-block; }
+        .reservation-table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .reservation-table th, .reservation-table td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; }
+        .reservation-table th { background-color: #f5f5f5; width: 20%; }
+        .cancel-btn { color: #dd4b39; text-decoration: none; font-weight: bold; }
+        .cancel-btn:hover { text-decoration: underline; }
+        .no-data { padding: 20px; background: #fff; border: 1px solid #e0e0e0; color: #666; }
+        .card { background: #fff; border: 1px solid #e0e0e0; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    </style>
 </head>
 <body>
     <h1>予約管理システム</h1>
-    <p><a href="/templates/admin/customers.html">予約一覧へ戻る</a></p>
-    <h2>予約詳細</h2>
-    <table>
-        <tr>
-            <th>予約ID</th>
-            <td>1</td>
-        </tr>
-        <tr>
-            <th>クリニック</th>
-            <td>新宿院</td>
-        </tr>
-        <tr>
-            <th>来院日時</th>
-            <td>2026年7月1日 14:00～（1時間）</td>
-        </tr>
-        <tr>
-            <th>顧客ID</th>
-            <td>1</td>
-        </tr>
-        <tr>
-            <th>氏名</th>
-            <td>高巻杏 様</td>
-        </tr>
-    </table>
+    <p class="back-link"><a th:href="@{/admin/reservations/weekly}">予約一覧（カレンダー）へ戻る</a></p>
+    
+    <h2 th:text="${formattedDate} + ' の予約詳細一覧'">2026年6月20日 の予約詳細一覧</h2>
 
-    <p><a href="">予約をキャンセルする</a></p>
+    <div th:if="${#lists.isEmpty(reservations)}" class="no-data">
+        この日の予約はありません。
+    </div>
+
+    <div th:unless="${#lists.isEmpty(reservations)}" th:each="res : ${reservations}" class="card">
+        <table class="reservation-table">
+            <tr>
+                <th>予約ID</th>
+                <td th:text="${res.id}">1</td>
+            </tr>
+            <tr>
+                <th>クリニック</th>
+                <td>新宿院</td> </tr>
+            <tr>
+                <th>来院日時</th>
+                <td th:text="${formattedDate} + ' '+${res.reserveTime} + ' ～（1時間）'"></td>
+            </tr>
+            <tr>
+                <th>顧客ID</th>
+                <td th:text="${res.customerId}"></td>
+            </tr>
+            <tr>
+                <th>氏名</th>
+				<td>
+				    <a th:href="@{/admin/customers/{id}(id=${res.customerId})}"
+				       th:text="${res.customerName} + ' 様'">
+				    </a>
+				</td>
+            </tr>
+        </table>
+        <p><a th:href="@{/admin/reservations/cancel/{id}(id=${res.id})}" class="cancel-btn">この予約をキャンセルする</a></p>
+    </div>
     
 </body>
 </html>
