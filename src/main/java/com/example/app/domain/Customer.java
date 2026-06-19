@@ -117,32 +117,38 @@ public class Customer {
 
 	//💡 画面表示用に「YYYY年M月D日（年齢 歳）」の文字列を返すメソッド
 	public String getFormattedBirthDateAndAge() {
-		// 💡 this.birthDate ではなく getBirthDate() を使用するように変更
+
 		String currentBirthDate = getBirthDate();
 
-		// 生年月日が未入力、または正しい8桁の数字でない場合は空文字を返す（安全対策）
-		if (currentBirthDate == null || !currentBirthDate.matches("^[0-9]{8}$")) {
+		if (currentBirthDate == null) {
 			return "";
 		}
 
 		try {
-			// 1. "20001112" などの文字列を LocalDate 型に変換
-			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+			DateTimeFormatter inputFormatter;
+
+			if (currentBirthDate.contains("-")) {
+				inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			} else {
+				inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+			}
+
 			LocalDate parsedDate = LocalDate.parse(currentBirthDate, inputFormatter);
 
-			// 2. 「yyyy年M月d日」の形式にフォーマット（1桁の月日は0埋めなし）
 			DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy年M月d日");
+
 			String formattedDate = parsedDate.format(outputFormatter);
 
-			// 3. 現在の日付を基準に正確な年齢を計算
-			long age = java.time.temporal.ChronoUnit.YEARS.between(parsedDate, LocalDate.now());
+			long age = java.time.temporal.ChronoUnit.YEARS
+					.between(parsedDate, LocalDate.now());
 
-			// 4. 組み立てて返却
-			return formattedDate + "（" + age + " 歳）";
+			return formattedDate + "（" + age + "歳）";
 
 		} catch (Exception e) {
-			// 万が一の解析エラー時は、元の文字列をそのまま返す
+
 			return currentBirthDate;
+
 		}
 	}
 

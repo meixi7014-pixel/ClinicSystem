@@ -8,7 +8,6 @@
 <body>
     <h1>顧客管理システム</h1>
     <p><a th:href="@{/admin/customers}">顧客一覧へ戻る</a></p>
-    
     <h2>顧客詳細</h2>
     <table>
         <tr>
@@ -20,9 +19,9 @@
             <td th:text="${customer.name} + ' 様'"></td>
         </tr>
 		<tr>
-			<th>生年月日</th>
-	        <td th:text="${customer.formattedBirthDateAndAge}"></td>
-        </tr>
+		    <th>生年月日</th>
+		    <td th:text="${customer.getFormattedBirthDateAndAge()}"></td>
+		</tr>
         <tr>
             <th>電話番号</th>
             <td th:text="${customer.phoneNumber}"></td>

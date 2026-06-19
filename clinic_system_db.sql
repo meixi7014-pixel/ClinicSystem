@@ -34,7 +34,7 @@ INSERT INTO `clinic_system_db`.`customers`
 VALUES 
     ('高巻杏', '09011111111', 'an@gmail.com', '2000-11-12'),
     ('新島真', '09022222222', 'makoto@gmail.com', '2000-04-23'),
-    ('佐倉双', '09033333333', 'futaba@gmail.com', '2000-02-19'),
+    ('佐倉双', '09033333333', 'futaba@gcustomersmail.com', '2000-02-19'),
     ('奥村春', '09044444444', 'haru@gmail.com', '2000-12-05'),
     ('芳澤かすみ', '09055555555', 'kasumi@gmail.com', '2000-03-25');
     
