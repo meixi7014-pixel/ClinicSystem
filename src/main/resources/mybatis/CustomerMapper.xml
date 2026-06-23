@@ -33,6 +33,31 @@
             birth_date AS birthDate FROM customers
         WHERE id = #{id}
   </select>
+  
+  <select id="searchCustomers" resultType="com.example.app.domain.Customer">
+    SELECT 
+        id, 
+        name, 
+        phone_number AS phoneNumber, 
+        email, 
+        birth_date AS birthDate
+    FROM `clinic_system_db`.`customers`
+    <where>
+      <if test="id != null">
+        id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        AND name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="phone != null and phone != ''">
+        AND phone_number LIKE CONCAT('%', #{phone}, '%')
+      </if>
+      <if test="email != null and email != ''">
+        AND email LIKE CONCAT('%', #{email}, '%')
+      </if>
+    </where>
+    ORDER BY id ASC
+  </select>
 
   <insert id="insertCustomer" 
           parameterType="com.example.app.domain.Customer" 

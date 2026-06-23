@@ -3,6 +3,7 @@ package com.example.app.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.app.domain.Customer;
 
@@ -19,4 +20,10 @@ public interface CustomerMapper {
 	List<Customer> findAllCustomers();
 
 	Customer findCustomerById(Integer id);
+
+	List<Customer> searchCustomers(
+			@Param("id") Integer id,
+			@Param("name") String name,
+			@Param("phone") String phone,
+			@Param("email") String email);
 }

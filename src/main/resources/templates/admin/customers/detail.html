@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顧客管理システム</title>
+    <div th:replace="~{admin/common :: common-header('/admin/customers', '顧客一覧・検索', '顧客詳細')}"></div>
+	<title>顧客管理システム</title>
 </head>
 <body>
-    <h1>顧客管理システム</h1>
-    <p><a th:href="@{/admin/customers}">顧客一覧へ戻る</a></p>
     <h2>顧客詳細</h2>
     <table>
         <tr>
@@ -18,10 +17,10 @@
             <th>氏名</th>
             <td th:text="${customer.name} + ' 様'"></td>
         </tr>
-		<tr>
-		    <th>生年月日</th>
-		    <td th:text="${customer.getFormattedBirthDateAndAge()}"></td>
-		</tr>
+        <tr>
+            <th>生年月日</th>
+            <td th:text="${customer.getFormattedBirthDateAndAge()}"></td>
+        </tr>
         <tr>
             <th>電話番号</th>
             <td th:text="${customer.phoneNumber}"></td>
@@ -32,12 +31,21 @@
         </tr>
     </table>
 
-<p><a th:href="@{/admin/customers/edit/{id}(id=${customer.id})}">顧客情報を編集する</a></p>
+    <p><a th:href="@{/admin/customers/edit/{id}(id=${customer.id})}">顧客情報を編集する</a></p>
     
+	<h2>来院予定</h2>
 
-<h2>来院予定</h2>
+	    <div th:if="${reservation != null}">
+	        <p>
+	            <a th:href="@{/admin/reservations/detail/{date}(date=${reservation.reserveDate})}" 
+	               th:text="'新宿院 ' + ${reservation.reserveDateTime} + ' ～（1時間）'">
+	            </a>
+	        </p>
+	    </div>
 
-<p>新宿院 2026年6月20日 11:00 ～（1時間）</p>
+	    <div th:if="${reservation == null}">
+	        <p style="color: #666;">来院予定なし</p>
+	    </div>
 
 </body>
 </html>

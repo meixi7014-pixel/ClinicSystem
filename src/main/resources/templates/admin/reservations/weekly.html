@@ -2,6 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+	<div th:replace="~{admin/common :: common-header(null, null, '週間予約スケジュール')}"></div>
     <title>今週のご予約空き状況</title>
     <style>
         body {
@@ -105,7 +106,6 @@
     </style>
 </head>
 <body>
-
     <h2>カウンセリングご予約空き状況</h2>
     <div class="subtitle" id="week-range">対象期間：計算中...</div>
 

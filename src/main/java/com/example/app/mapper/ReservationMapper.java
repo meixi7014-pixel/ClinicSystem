@@ -17,4 +17,6 @@ public interface ReservationMapper {
 			@Param("endDate") String endDate);
 
 	List<Map<String, Object>> findReservationDetailsByDate(String targetDate);
+
+	Map<String, Object> findLatestReservationByCustomerId(Integer customerId);
 }

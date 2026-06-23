@@ -3,6 +3,7 @@ package com.example.app.controller;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters; // 💡 追記：日付の調整用
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam; // 💡 追記
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.app.mapper.ReservationMapper;
 
@@ -27,7 +28,7 @@ public class AdminReservationController {
 
 	@GetMapping("/weekly")
 	public String showWeeklyCalendar(
-			@RequestParam(name = "date", required = false) String dateStr, // 💡 パラメータを受け取る
+			@RequestParam(name = "date", required = false) String dateStr,
 			Model model) throws JsonParseException {
 
 		// 1. 基準となる日付を決定する（パラメータがあればそれを解析、なければ今日）
@@ -44,11 +45,12 @@ public class AdminReservationController {
 			baseDate = LocalDate.now();
 		}
 
-		// 2. 基準日を基に、その週の日曜日（開始日）と翌週の日曜日（終了日）を計算
-		LocalDate startDate = baseDate.with(DayOfWeek.SUNDAY); // 表示する週の日曜日
+		// 2. 💡 修正：基準日を基に「直近の過去または当日の日曜日」を正しく計算する
+		// これにより、6/23（火）から見て 6/21（日）が正しくスタート日になります
+		LocalDate startDate = baseDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
 		LocalDate endDate = startDate.plusWeeks(1); // 翌週の日曜日
 
-		// 💡 前の週（-1週）と次の週（+1週）のボタン用URL日付を計算
+		// 前の週（-1週）と次の週（+1週）のボタン用URL日付を計算
 		String prevWeekStr = startDate.minusWeeks(1).format(paramFormatter);
 		String nextWeekStr = startDate.plusWeeks(1).format(paramFormatter);
 
@@ -66,19 +68,18 @@ public class AdminReservationController {
 
 		// 5. HTML（Thymeleaf）にデータを渡す
 		model.addAttribute("jsonCounts", jsonCounts);
-		model.addAttribute("prevWeek", prevWeekStr); // 💡 渡す
-		model.addAttribute("nextWeek", nextWeekStr); // 💡 渡す
-		model.addAttribute("baseDateStr", startDate.format(paramFormatter)); // 💡 カレンダー描画の基準日
+		model.addAttribute("prevWeek", prevWeekStr);
+		model.addAttribute("nextWeek", nextWeekStr);
+		model.addAttribute("baseDateStr", startDate.format(paramFormatter)); // カレンダー描画の基準日
 
 		return "admin/reservations/weekly";
 	}
 
-	//💡 追記：特定の日付の予約詳細一覧を表示する (GET: /admin/reservations/detail/{dateStr})
+	// 💡 変更なし：特定の日付の予約詳細一覧を表示する (GET: /admin/reservations/detail/{dateStr})
 	@GetMapping("/detail/{dateStr}")
 	public String showReservationDetail(@org.springframework.web.bind.annotation.PathVariable("dateStr") String dateStr,
 			Model model) {
 
-		// 1. 入力された日付文字列 "20260620" を "2026-06-20" 形式に変換
 		String targetDateSql = "";
 		String formattedDate = "";
 		if (dateStr != null && dateStr.matches("^[0-9]{8}$")) {
@@ -91,10 +92,8 @@ public class AdminReservationController {
 			return "redirect:/admin/reservations/weekly";
 		}
 
-		// 2. マッパーから顧客情報（氏名）を結合した予約詳細リストを取得
 		List<Map<String, Object>> reservations = reservationMapper.findReservationDetailsByDate(targetDateSql);
 
-		// 3. 取得したマップのキー名を小文字等に補正してThymeleafへ渡しやすくする
 		List<Map<String, Object>> normalizedList = new java.util.ArrayList<>();
 		for (Map<String, Object> original : reservations) {
 			Map<String, Object> cleanMap = new java.util.HashMap<>();
@@ -112,11 +111,9 @@ public class AdminReservationController {
 			normalizedList.add(cleanMap);
 		}
 
-		// 4. 画面に必要なデータを格納
 		model.addAttribute("reservations", normalizedList);
 		model.addAttribute("formattedDate", formattedDate);
 
-		// src/main/resources/templates/admin/reservations/detail.html を呼び出す
 		return "admin/reservations/detail";
 	}
 }

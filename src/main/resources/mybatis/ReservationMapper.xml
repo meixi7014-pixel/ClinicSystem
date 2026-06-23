@@ -26,6 +26,19 @@
     WHERE DATE(r.reserved_at) = #{targetDate}
     ORDER BY r.reserved_at ASC
   </select>
+  
+  <select id="findLatestReservationByCustomerId" parameterType="int" resultType="map">
+    SELECT 
+        id,
+        DATE_FORMAT(reserved_at, '%Y%m%d') AS reserveDate, -- 💡 追記（例：20260620）
+        DATE_FORMAT(reserved_at, '%Y年%c月%e日 %H:%i') AS reserveDateTime
+    FROM `clinic_system_db`.`reservations`
+    WHERE customer_id = #{customerId}
+      AND (status = 1 OR status IS NULL)
+    ORDER BY reserved_at DESC
+    LIMIT 1
+  </select>
+  
   <insert id="insertReservation" 
           parameterType="com.example.app.domain.Reservation">
           

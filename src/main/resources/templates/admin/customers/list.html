@@ -3,20 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顧客管理システム</title>
+    <div th:replace="~{admin/common :: common-header(null, null, '顧客一覧・検索')}"></div>
+	<title>顧客一覧 | 顧客管理</title>
+    <style>
+        .search-form { background-color: #f5f5f5; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .search-form input { margin-right: 10px; padding: 5px; }
+        .search-form button { padding: 5px 15px; background-color: #007bbb; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #e0e0e0; padding: 10px; text-align: left; }
+        th { background-color: #f9f9f9; }
+    </style>
 </head>
-<body>
-    <h1>顧客管理システム</h1>
-    <p><a th:href="@{/admin}">顧客管理システムTOPへ戻る</a></p>
-    
-    <h2>顧客一覧</h2>
+<body>    
+    <h2>顧客一覧・検索</h2>
+
+    <div class="search-form">
+        <form th:action="@{/admin/customers}" method="get">
+            <input type="number" name="searchId" th:value="${searchId}" placeholder="ID (完全一致)" style="width: 100px;">
+            <input type="text" name="searchName" th:value="${searchName}" placeholder="氏名 (部分一致)">
+            <input type="text" name="searchPhone" th:value="${searchPhone}" placeholder="電話番号 (部分一致)">
+            <input type="text" name="searchEmail" th:value="${searchEmail}" placeholder="メールアドレス (部分一致)">
+            <button type="submit">検索</button>
+            <a th:href="@{/admin/customers}" style="margin-left: 10px; font-size: 0.9rem; color: #666;">クリア</a>
+        </form>
+    </div>
+
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>氏名</th>
-				<th>電話番号</th>
-				<th>メールアドレス</th>
+                <th>電話番号</th>
+                <th>メールアドレス</th>
                 <th></th>
             </tr>
         </thead>
@@ -24,8 +42,8 @@
             <tr th:each="customer : ${customers}">
                 <td th:text="${customer.id}"></td>
                 <td th:text="${customer.name} + ' 様'"></td>
-				<td th:text="${customer.phoneNumber}"></td>
-				<td th:text="${customer.email}"></td>
+                <td th:text="${customer.phoneNumber}"></td>
+                <td th:text="${customer.email}"></td>
                 <td><a th:href="@{/admin/customers/{id}(id=${customer.id})}">顧客詳細</a></td>
             </tr>
         </tbody>

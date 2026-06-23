@@ -22,4 +22,10 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer getCustomerById(Integer id) {
 		return customerMapper.findCustomerById(id);
 	}
+
+	@Override
+	public List<Customer> searchCustomers(Integer id, String name, String phone, String email) {
+		// コントローラーから受け取った検索条件をそのままマッパーに渡してDB検索
+		return customerMapper.searchCustomers(id, name, phone, email);
+	}
 }

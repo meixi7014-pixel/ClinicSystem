@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予約詳細一覧</title>
+    <div th:replace="~{admin/common :: common-header('/admin/reservations/weekly', '週間予約スケジュール', '予約一覧')}"></div>
+	<title>予約詳細一覧</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; color: #333; }
         h1 { color: #007bbb; font-size: 1.8rem; }
@@ -19,8 +20,6 @@
     </style>
 </head>
 <body>
-    <h1>予約管理システム</h1>
-    <p class="back-link"><a th:href="@{/admin/reservations/weekly}">予約一覧（カレンダー）へ戻る</a></p>
     
     <h2 th:text="${formattedDate} + ' の予約詳細一覧'">2026年6月20日 の予約詳細一覧</h2>
 
