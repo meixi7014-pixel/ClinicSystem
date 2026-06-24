@@ -12,7 +12,6 @@ public interface CustomerMapper {
 
 	void insertCustomer(Customer customer);
 
-	// 重複件数を取得
 	int countByPhoneNumber(String phoneNumber);
 
 	int countByEmail(String email);
@@ -21,7 +20,17 @@ public interface CustomerMapper {
 
 	Customer findCustomerById(Integer id);
 
+	// 💡 修正：limit と offset を引数に追加
 	List<Customer> searchCustomers(
+			@Param("id") Integer id,
+			@Param("name") String name,
+			@Param("phone") String phone,
+			@Param("email") String email,
+			@Param("limit") int limit,
+			@Param("offset") int offset);
+
+	// 💡 追加：条件に該当する総件数を取得
+	int countSearchCustomers(
 			@Param("id") Integer id,
 			@Param("name") String name,
 			@Param("phone") String phone,

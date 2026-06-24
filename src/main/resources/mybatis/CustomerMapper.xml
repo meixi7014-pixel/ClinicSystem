@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.app.mapper.CustomerMapper">
 
-<select id="countByPhoneNumber" parameterType="string" resultType="int">
+  <select id="countByPhoneNumber" parameterType="string" resultType="int">
     SELECT COUNT(*) FROM customers WHERE phone_number = #{phoneNumber}
   </select>
 
@@ -21,10 +21,9 @@
             email, 
             birth_date AS birthDate 
         FROM customers
-        ORDER BY id ASC
-    </select>
+        ORDER BY id DESC </select>
     
-    <select id="findCustomerById" parameterType="int" resultType="com.example.app.domain.Customer">
+  <select id="findCustomerById" parameterType="int" resultType="com.example.app.domain.Customer">
         SELECT 
             id, 
             name, 
@@ -56,14 +55,30 @@
         AND email LIKE CONCAT('%', #{email}, '%')
       </if>
     </where>
-    ORDER BY id ASC
+    ORDER BY id DESC LIMIT #{limit} OFFSET #{offset} </select>
+
+  <select id="countSearchCustomers" resultType="int">
+    SELECT COUNT(*) FROM customers
+    <where>
+      <if test="id != null">
+        id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        AND name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="phone != null and phone != ''">
+        AND phone_number LIKE CONCAT('%', #{phone}, '%')
+      </if>
+      <if test="email != null and email != ''">
+        AND email LIKE CONCAT('%', #{email}, '%')
+      </if>
+    </where>
   </select>
 
   <insert id="insertCustomer" 
           parameterType="com.example.app.domain.Customer" 
           useGeneratedKeys="true" 
           keyProperty="id">
-          
     INSERT INTO customers (
       name, 
       phone_number, 
@@ -75,7 +90,6 @@
       #{email}, 
       #{birthDate}
     )
-    
   </insert>
 
 </mapper>

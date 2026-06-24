@@ -9,6 +9,9 @@ public interface CustomerService {
 
 	Customer getCustomerById(Integer id);
 
-	// 💡 追記：検索処理用のメソッド定義
-	List<Customer> searchCustomers(Integer id, String name, String phone, String email);
+	// 💡 修正：page 引数を追加
+	List<Customer> searchCustomers(Integer id, String name, String phone, String email, int page);
+
+	// 💡 追加：総件数から総ページ数を計算して取得するメソッド
+	int getTotalPages(Integer id, String name, String phone, String email);
 }
