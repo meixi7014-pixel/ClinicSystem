@@ -1,23 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta th:replace="~{admin/common :: common-head}">
-    <title>顧客一覧 | 顧客管理</title>
-    <style>
-        .search-form { background-color: #f5f5f5; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
-        .search-form input { margin-right: 10px; padding: 5px; }
-        .search-form button { padding: 5px 15px; background-color: #007bbb; color: white; border: none; border-radius: 3px; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #e0e0e0; padding: 10px; text-align: left; }
-        th { background-color: #f9f9f9; }
-        
-        /* 💡 追加：ページネーションのデザイン */
-        .pagination { display: flex; justify-content: center; list-style: none; padding: 0; margin-top: 20px; gap: 5px; }
-        .pagination li a, .pagination li span { display: block; padding: 8px 12px; border: 1px solid #e0e0e0; text-decoration: none; color: #007bbb; border-radius: 4px; }
-        .pagination li.active span { background-color: #007bbb; color: white; border-color: #007bbb; font-weight: bold; }
-        .pagination li.disabled span { color: #ccc; cursor: not-allowed; }
-    </style>
-</head>
+	<head>
+	    <th:block th:replace="~{admin/common :: common-head}"></th:block>
+	    
+	    <title>顧客一覧 | 顧客管理</title>
+	</head>
 <body>    
     <div th:replace="~{admin/common :: common-header(null, null, '顧客一覧・検索')}"></div>
 
@@ -25,13 +12,12 @@
 
     <div class="search-form">
         <form th:action="@{/admin/customers}" method="get">
-            <input type="number" name="searchId" th:value="${searchId}" placeholder="ID (完全一致)" style="width: 100px;">
+            <input type="number" name="searchId" th:value="${searchId}" placeholder="ID (完全一致)">
             <input type="text" name="searchName" th:value="${searchName}" placeholder="氏名 (部分一致)">
             <input type="text" name="searchPhone" th:value="${searchPhone}" placeholder="電話番号 (部分一致)">
             <input type="text" name="searchEmail" th:value="${searchEmail}" placeholder="メールアドレス (部分一致)">
-   
             <button type="submit">検索</button>
-            <a th:href="@{/admin/customers}" style="margin-left: 10px; font-size: 0.9rem; color: #666;">クリア</a>
+            <a th:href="@{/admin/customers}" class="clear-link">クリア</a>
         </form>
     </div>
 
@@ -73,6 +59,7 @@
         </li>
     </ul>
 	
-    <div th:replace="~{admin/common :: common-logout}"></div>    
+    <div th:replace="~{admin/common :: common-logout}"></div>
+    
 </body>
 </html>

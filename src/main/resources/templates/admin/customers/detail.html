@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <th:block th:replace="~{admin/common :: common-head}"></th:block>
     <div th:replace="~{admin/common :: common-header('/admin/customers', '顧客一覧・検索', '顧客詳細')}"></div>
-	<title>顧客管理システム</title>
+    <title>顧客管理システム</title>
 </head>
 <body>
     <h2>顧客詳細</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <td th:text="${customer.id}"></td>
-        </tr>
-        <tr>
-            <th>氏名</th>
-            <td th:text="${customer.name} + ' 様'"></td>
-        </tr>
-        <tr>
-            <th>生年月日</th>
-            <td th:text="${customer.getFormattedBirthDateAndAge()}"></td>
-        </tr>
-        <tr>
-            <th>電話番号</th>
-            <td th:text="${customer.phoneNumber}"></td>
-        </tr>
-        <tr>
-            <th>メールアドレス</th>
-            <td th:text="${customer.email}"></td>
-        </tr>
-    </table>
-
-    <p><a th:href="@{/admin/customers/edit/{id}(id=${customer.id})}">顧客情報を編集する</a></p>
+    <div class="card">
+        <table>
+            <tr>
+                <th>ID</th>
+                <td th:text="${customer.id}"></td>
+            </tr>
+            <tr>
+                <th>氏名</th>
+                <td th:text="${customer.name} + ' 様'"></td>
+            </tr>
+            <tr>
+                <th>生年月日</th>
+                <td th:text="${customer.getFormattedBirthDateAndAge()}"></td>
+            </tr>
+            <tr>
+                <th>電話番号</th>
+                <td th:text="${customer.phoneNumber}"></td>
+            </tr>
+            <tr>
+                <th>メールアドレス</th>
+                <td th:text="${customer.email}"></td>
+            </tr>
+        </table>
+        <p><a th:href="@{/admin/customers/edit/{id}(id=${customer.id})}">顧客情報を編集する</a></p>
+    </div>
     
-	<h2>来院予定</h2>
+    <h2>来院予定</h2>
+    <div class="card">
+        <div th:if="${reservation != null}">
+            <p>
+                <a th:href="@{/admin/reservations/detail/{date}(date=${reservation.reserveDate})}" 
+                   th:text="'新宿院 ' + ${reservation.reserveDateTime} + ' ～（1時間）'">
+                </a>
+            </p>
+        </div>
 
-	    <div th:if="${reservation != null}">
-	        <p>
-	            <a th:href="@{/admin/reservations/detail/{date}(date=${reservation.reserveDate})}" 
-	               th:text="'新宿院 ' + ${reservation.reserveDateTime} + ' ～（1時間）'">
-	            </a>
-	        </p>
-	    </div>
-
-	    <div th:if="${reservation == null}">
-	        <p style="color: #666;">来院予定なし</p>
-	    </div>
+        <div th:if="${reservation == null}">
+            <p class="no-data-text">来院予定なし</p>
+        </div>
+    </div>
 		
-		<div th:replace="~{admin/common :: common-logout}"></div>
+    <div th:replace="~{admin/common :: common-logout}"></div>
 
 </body>
 </html>

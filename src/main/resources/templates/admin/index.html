@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<div th:replace="~{admin/common :: common-header(null, null, '管理メニューTOP')}"></div>
+     <th:block th:replace="~{admin/common :: common-head}"></th:block>
+    <div th:replace="~{admin/common :: common-header(null, null, '管理メニューTOP')}"></div>
     <title>管理トップ | クリニック管理システム</title>
 </head>
 <body>
-    <h2>顧客情報の確認・修正</h2>
-    <p>登録された顧客データの検索、詳細確認、情報の更新を行います。</p>
-    <p><a href="admin/customers">顧客管理を開く</a></p>
-    <h2>予約情報の確認・調整</h2>
-    <p>予約確認、キャンセル処理を行います。</p>
-    <p><a href="admin/reservations/weekly">予約管理を開く</a></p>
-	<div th:replace="~{admin/common :: common-logout}"></div>
-	</body>
+	<h2>管理メニューTOP</h2>
+    <div class="card">
+        <h2>顧客情報の確認・修正</h2>
+        <p>登録された顧客データの検索、詳細確認、情報の更新を行います。</p>
+        <p><a href="admin/customers">顧客管理を開く</a></p>
+    </div>
+    <div class="card">
+        <h2>予約情報の確認・調整</h2>
+        <p>予約確認、キャンセル処理を行います。</p>
+        <p><a href="admin/reservations/weekly">予約管理を開く</a></p>
+    </div>
+    <div th:replace="~{admin/common :: common-logout}"></div>
+</body>
 </html>

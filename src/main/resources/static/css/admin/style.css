@@ -1,0 +1,383 @@
+@charset "UTF-8";
+
+:root {
+  --bg-color: #F5F7FA;
+  --card-bg: #FFFFFF;
+  --main-color: #263238;
+  --sub-color: #37474F;
+  --accent-color: #1976D2;
+  --sub-blue: #E3F2FD;
+  --border-color: #E2E8F0;
+  --text-main: #1F2937;
+  --text-sub: #64748B;
+  --header-bg: #263238;
+  --content-width: 1000px;
+  /* 横幅を固定 */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  line-height: 1.6;
+}
+
+/* ヘッダー（横幅いっぱい） */
+.global-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 75px;
+  padding: 0 24px;
+  background-color: var(--header-bg);
+  color: #FFFFFF;
+  width: 100%;
+}
+
+.global-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.global-header h1 a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.breadcrumb {
+  font-size: 0.85rem;
+  color: #9CA3AF;
+  margin-top: 4px;
+}
+
+.breadcrumb a {
+  color: #9CA3AF;
+  text-decoration: none;
+}
+
+.login-user-info {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+}
+
+.login-user-info span {
+  font-weight: bold;
+}
+
+/* コンテンツ幅固定・中央寄せの共通設定 */
+.logout-area,
+h1.page-title,
+h2,
+.subtitle,
+.no-data,
+.no-data-text,
+.error-message,
+.calendar-nav,
+.card,
+.search-form,
+.login-page form,
+.pagination {
+  width: var(--content-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ログアウトエリア */
+.logout-area {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: #F1F5F9;
+}
+
+/* コンテンツ見出し */
+h1.page-title {
+  font-size: 1.8rem;
+  color: var(--main-color);
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: 1.25rem;
+  color: var(--main-color);
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+/* カードUI */
+.card,
+.search-form,
+.login-page form {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+
+/* ボタン共通 */
+button {
+  background-color: var(--main-color);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: var(--accent-color);
+}
+
+button:disabled {
+  background-color: var(--border-color);
+  color: var(--text-sub);
+  cursor: not-allowed;
+}
+
+/* リンク */
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* フォーム要素 */
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  color: var(--text-main);
+  background-color: #FFFFFF;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus {
+  border-color: var(--accent-color);
+}
+
+.search-form form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.clear-link {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  margin-left: 8px;
+}
+
+/* エラー・各種テキスト */
+.error-message {
+  color: #EF4444;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.subtitle,
+.no-data,
+.no-data-text {
+  color: var(--text-sub);
+  margin-bottom: 24px;
+}
+
+.no-data {
+  background-color: var(--card-bg);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+/* テーブル共通 */
+table {
+  width: var(--content-width);
+  margin: 0 auto 24px auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.card table {
+  width: 100%;
+  margin: 0 0 16px 0;
+  box-shadow: none;
+  border: 1px solid var(--border-color);
+  border-radius: 0;
+}
+
+th, td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: #F8FAFC;
+  color: var(--text-sub);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+tr:last-child td,
+tr:last-child th {
+  border-bottom: none;
+}
+
+/* ページネーション */
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  gap: 8px;
+}
+
+.pagination li a,
+.pagination li span {
+  display: block;
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  color: var(--text-main);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  transition: all 0.2s;
+}
+
+.pagination li a:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.pagination li.active span {
+  background-color: var(--main-color);
+  color: #FFFFFF;
+  border-color: var(--main-color);
+}
+
+.pagination li.disabled span {
+  color: var(--text-sub);
+  background-color: #F1F5F9;
+  border-color: var(--border-color);
+}
+
+/* カレンダー専用ナビゲーション */
+.calendar-nav {
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.nav-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--main-color);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: var(--main-color);
+  color: #FFFFFF;
+  border-color: var(--main-color);
+}
+
+/* カレンダーテーブル */
+.calendar-table th,
+.calendar-table td {
+  text-align: center;
+  padding: 12px 8px;
+}
+
+.calendar-table .time-col {
+  background-color: #F8FAFC;
+  font-weight: bold;
+  color: var(--text-sub);
+}
+
+.day-0 { color: #EF4444; }
+.day-6 { color: var(--accent-color); }
+
+/* 予約枠ステータス */
+.status {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 8px 0;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.status.available {
+  color: var(--accent-color);
+  background-color: var(--sub-blue);
+}
+
+.status.available:hover {
+  background-color: var(--accent-color);
+  color: #FFFFFF;
+}
+
+.status.booked {
+  color: var(--text-sub);
+  background-color: #F1F5F9;
+  font-weight: normal;
+}
+
+.cancel-btn {
+  color: #EF4444;
+  font-weight: bold;
+}

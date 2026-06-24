@@ -1,112 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-	<div th:replace="~{admin/common :: common-header(null, null, '週間予約スケジュール')}"></div>
-    <title>今週のご予約空き状況</title>
-    <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #333;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: #007bbb;
-        }
-        .subtitle {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        
-        /* 💡 追記：ナビゲーションボタン全体の配置スタイル */
-        .calendar-nav {
-            margin-bottom: 15px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .nav-btn {
-            display: inline-block;
-            padding: 6px 14px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #007bbb;
-            background-color: #fff;
-            border: 1px solid #007bbb;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .nav-btn:hover {
-            color: #fff;
-            background-color: #007bbb;
-        }
-
-        /* カレンダーのテーブルスタイル */
-        .calendar-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .calendar-table th, .calendar-table td {
-            border: 1px solid #e0e0e0;
-            padding: 12px 5px;
-            vertical-align: middle;
-        }
-        /* ヘッダー（曜日）のスタイル */
-        .calendar-table th {
-            background-color: #f0f4f8;
-            font-weight: bold;
-            width: 12%;
-        }
-        .calendar-table th:first-child {
-            background-color: #e8eef4;
-            width: 10%; /* 時間列 */
-        }
-        /* 土日の色分け */
-        .day-0 { color: #dd4b39; } /* 日曜 */
-        .day-6 { color: #007bbb; } /* 土曜 */
-
-        /* 時間列のスタイル */
-        .time-col {
-            font-weight: bold;
-            background-color: #fafafa;
-            font-size: 0.9rem;
-        }
-        /* 予約枠の状態スタイル */
-        .status {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: bold;
-            padding: 4px 0;
-            border-radius: 4px;
-            text-decoration: none;
-        }
-        /* 予約あり（アクティブカラー） */
-        .status.available {
-            color: #28a745;
-            background-color: #e8f5e9;
-            cursor: pointer;
-        }
-        .status.available:hover {
-            background-color: #c8e6c9;
-        }
-        /* 予約なし（グレーアウト） */
-        .status.booked {
-            color: #999;
-            background-color: #f5f5f5;
-            font-weight: normal;
-        }
-    </style>
+     <th:block th:replace="~{admin/common :: common-head}"></th:block>
+    <div th:replace="~{admin/common :: common-header(null, null, '週間予約スケジュール')}"></div>
+    <title>予約状況</title>
 </head>
 <body>
-    <h2>カウンセリングご予約空き状況</h2>
+    <h2>カウンセリング予約状況</h2>
     <div class="subtitle" id="week-range">対象期間：計算中...</div>
 
     <div class="calendar-nav">
@@ -129,24 +29,19 @@
             </tr>
         </thead>
         <tbody id="calendar-body">
-            </tbody>
+        </tbody>
     </table>
 	
-	<div th:replace="~{admin/common :: common-logout}"></div>
+    <div th:replace="~{admin/common :: common-logout}"></div>
 
     <script th:inline="javascript">
         const jsonString = /*[[${jsonCounts}]]*/ '[]';
         const dbReservationCounts = JSON.parse(jsonString);
-        
-        // 💡 Java側から渡された「その週の日曜日の日付(文字列)」を取得
         const baseDateParam = /*[[${baseDateStr}]]*/ null;
     </script>
 
     <script>
-        // --- 1. カレンダーの日付と曜日ヘッダーの設定 ---
         let sunday;
-        
-        // 💡 修正：Javaから指定された基準日がある場合はそれをパースしてベースにする
         if (baseDateParam) {
             const year = parseInt(baseDateParam.substring(0, 4));
             const month = parseInt(baseDateParam.substring(4, 6)) - 1;
@@ -159,21 +54,17 @@
             sunday.setDate(today.getDate() - currentDay);
         }
 
-        // タイトルの期間（日～土）を表示
         const saturday = new Date(sunday);
         saturday.setDate(sunday.getDate() + 6);
         document.getElementById('week-range').textContent = `対象期間：${sunday.getMonth() + 1}/${sunday.getDate()}（日）～ ${saturday.getMonth() + 1}/${saturday.getDate()}（土）`;
-
-        // 各曜日の日付文字列（YYYYMMDD形式）を保持する配列
+        
         const dateStrings = [];
-
-        // 各曜日のヘッダーに「月/日」を埋め込む
         const weekLabels = ['日', '月', '火', '水', '木', '金', '土'];
+        
         for (let i = 0; i < 7; i++) {
             const targetDate = new Date(sunday);
             targetDate.setDate(sunday.getDate() + i);
             
-            // YYYYMMDD 形式の文字列を作成して配列に保存
             const yyyy = targetDate.getFullYear();
             const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
             const dd = String(targetDate.getDate()).padStart(2, '0');
@@ -183,31 +74,25 @@
             th.innerHTML = `${targetDate.getMonth() + 1}/${targetDate.getDate()}<br><span class="day-${i}">${weekLabels[i]}</span>`;
         }
 
-        // --- 2. 10時～19時の時間枠とリアル予約データの生成 ---
         const startHour = 10;
         const endHour = 19;
         const calendarBody = document.getElementById('calendar-body');
 
-        // 時間ごとにループを回して行(tr)を作成
         for (let hour = startHour; hour <= endHour; hour++) {
             const row = document.createElement('tr');
-
-            // 時間列を追加
+            
             const timeTd = document.createElement('td');
             timeTd.className = 'time-col';
             timeTd.textContent = `${hour}:00`;
             row.appendChild(timeTd);
 
-            // 日〜土までの7日間分のマス(td)を追加
             for (let day = 0; day < 7; day++) {
                 const cell = document.createElement('td');
                 const targetDateStr = dateStrings[day];
 
-                // データベースから取得したデータ内に、該当する「日付」と「時間」が一致するものがあるか検証
                 const matchData = dbReservationCounts.find(data => 
                     data.reserveDate === targetDateStr && parseInt(data.reserveHour) === hour
                 );
-                
                 const count = matchData ? parseInt(matchData.reservationCount) : 0;
 
                 if (count > 0) {

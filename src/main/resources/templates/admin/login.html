@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログイン | クリニック管理システム</title>
-    <style>
-        .error-message {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/admin/style.css}">
 </head>
-<body>
-    <h1>クリニック管理システム</h1>
+<body class="login-page">
+    <h1 class="page-title">クリニック管理システム</h1>
     <h2>ログイン</h2>
     
     <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
@@ -37,11 +32,9 @@
         const submitBtn = document.getElementById('submitBtn');
 
         function toggleButtonState() {
-            // 両方の入力欄から前後の空白を除去した値を取得
             const adminIdValue = adminIdInput.value.trim();
             const passwordValue = passwordInput.value.trim();
 
-            // 両方が空欄でない場合のみ disabled を解除(false)する
             if (adminIdValue !== "" && passwordValue !== "") {
                 submitBtn.disabled = false;
             } else {
@@ -49,11 +42,8 @@
             }
         }
 
-        // 入力されるたびに判定関数を実行
         adminIdInput.addEventListener('input', toggleButtonState);
         passwordInput.addEventListener('input', toggleButtonState);
-
-        // 画面表示時や、エラーで戻ってきた際に入力値が残っていた場合の初期判定
         window.addEventListener('DOMContentLoaded', toggleButtonState);
     </script>
 </body>
