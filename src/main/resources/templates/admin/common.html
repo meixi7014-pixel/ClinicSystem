@@ -11,20 +11,16 @@
         
         <nav class="breadcrumb" th:if="${currentText != '管理メニューTOP'}" style="font-size: 0.85rem; margin-top: 5px; color: #666;">
             <a th:href="@{/admin}">管理メニューTOP</a>
-            
             <span th:if="${parentUrl != null}">
                 &gt; <a th:href="@{${parentUrl}}" th:text="${parentText}"></a>
             </span>
-            
             <span th:if="${currentText != null}">
                 &gt; <span th:text="${currentText}"></span>
             </span>
         </nav>
-
-        <nav th:replace="~{:: common-logout}"></nav>
     </header>
 
-    <div th:fragment="common-logout" class="logout-area">
+    <div th:fragment="common-logout" class="logout-area" style="margin-top: 40px; margin-bottom: 20px;">
         <form th:action="@{/admin/logout}" method="post">
             <button type="submit" class="btn-logout">🔑 ログアウト</button>
         </form>

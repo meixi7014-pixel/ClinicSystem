@@ -55,6 +55,9 @@
         </table>
         <p><a th:href="@{/admin/reservations/cancel/{id}(id=${res.id})}" class="cancel-btn">この予約をキャンセルする</a></p>
     </div>
+	
+	<div th:replace="~{admin/common :: common-logout}"></div>
+	<div th:replace="~{admin/common :: common-footer}"></div>
     
 </body>
 </html>

@@ -46,6 +46,9 @@
 	    <div th:if="${reservation == null}">
 	        <p style="color: #666;">来院予定なし</p>
 	    </div>
+		
+		<div th:replace="~{admin/common :: common-logout}"></div>
+		<div th:replace="~{admin/common :: common-footer}"></div>
 
 </body>
 </html>
