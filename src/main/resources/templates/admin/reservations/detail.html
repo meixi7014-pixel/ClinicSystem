@@ -3,7 +3,7 @@
 <head>
      <th:block th:replace="~{admin/common :: common-head}"></th:block>
     <div th:replace="~{admin/common :: common-header('/admin/reservations/weekly', '週間予約スケジュール', '予約一覧')}"></div>
-    <title>予約詳細一覧</title>
+    <title>予約詳細一覧 | クリニック管理システム</title>
 </head>
 <body>
     
@@ -40,7 +40,7 @@
                 </td>
             </tr>
         </table>
-        <p><a th:href="@{/admin/reservations/cancel/{id}(id=${res.id})}" class="cancel-btn">この予約をキャンセルする</a></p>
+<!--        <p><a th:href="@{/admin/reservations/cancel/{id}(id=${res.id})}" class="cancel-btn">この予約をキャンセルする</a></p>-->
     </div>
 	
     <div th:replace="~{admin/common :: common-logout}"></div>

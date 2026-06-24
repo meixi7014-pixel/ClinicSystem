@@ -3,7 +3,7 @@
 <head>
      <th:block th:replace="~{admin/common :: common-head}"></th:block>
     <div th:replace="~{admin/common :: common-header('/admin/customers', '顧客一覧・検索', '顧客詳細')}"></div>
-    <title>顧客管理システム</title>
+    <title>顧客詳細 | クリニック管理システム</title>
 </head>
 <body>
     <h2>顧客詳細</h2>
@@ -30,7 +30,7 @@
                 <td th:text="${customer.email}"></td>
             </tr>
         </table>
-        <p><a th:href="@{/admin/customers/edit/{id}(id=${customer.id})}">顧客情報を編集する</a></p>
+<!--        <p><a th:href="@{/admin/customers/edit/{id}(id=${customer.id})}">顧客情報を編集する</a></p>-->
     </div>
     
     <h2>来院予定</h2>

@@ -69,8 +69,22 @@ body {
   color: #FFFFFF;
 }
 
-.login-user-info span {
-  font-weight: bold;
+.login-user-info {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+  display: flex;         /* 横並びにする */
+  align-items: center;   /* 上下中央に揃える */
+  gap: 6px;              /* アイコンと文字の間の余白 */
+}
+
+/* アイコン専用のスタイル */
+.login-user-icon {
+  width: 16px;           /* アイコンの幅 */
+  height: 16px;          /* アイコンの高さ */
+  fill: #FFFFFF;         /* ★ここでアイコンの色を自由に変更できます */
 }
 
 /* コンテンツ幅固定・中央寄せの共通設定 */
