@@ -352,6 +352,7 @@ tr:last-child th {
 .calendar-table th,
 .calendar-table td {
   text-align: center;
+  width: 120px;
   padding: 12px 8px;
 }
 
