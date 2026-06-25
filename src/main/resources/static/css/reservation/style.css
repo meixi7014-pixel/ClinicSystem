@@ -52,6 +52,11 @@ body {
     border: 1px solid #EAE4E0;
 }
 
+/* 完了画面用のセンタリングコンテナ */
+.container.text-center {
+    text-align: center;
+}
+
 /* メイン見出し */
 .main-title {
     text-align: center;
@@ -134,7 +139,7 @@ input[type="email"] {
     font-size: 14px;
     outline: none;
     transition: all 0.3s ease;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
 }
 input[type="text"]:focus,
 input[type="number"]:focus,
@@ -146,6 +151,9 @@ input[type="email"]:focus {
 }
 
 /* 同意チェックボックス */
+.checkbox-container {
+    text-align: center;
+}
 .checkbox-label {
     display: inline-flex;
     align-items: center;
@@ -166,12 +174,18 @@ input[type="email"]:focus {
     text-align: center;
     margin-top: 24px;
 }
+.link-back-container.mt-40 {
+    margin-top: 40px;
+}
 .link-back {
     font-size: 13px;
     color: #A39489;
     border-bottom: 1px solid #EAE4E0;
     padding-bottom: 2px;
     transition: all 0.3s ease;
+}
+.link-back.fs-14 {
+    font-size: 14px;
 }
 .link-back:hover {
     color: #C5A880;
@@ -275,30 +289,78 @@ input[type="email"]:focus {
 }
 
 /* ==========================================================================
-   5. confirm.html 固有パーツ (注意書きスクロールBOX)
+   5. confirm.html / complete.html 固有パーツ
    ========================================================================== */
-   .notes-box {
-       background-color: #FAFAFA;
-       border: 1px solid #EAE4E0;
-       border-radius: 4px;
-       padding: 12px 16px;
-       font-size: 12px;
-       line-height: 1.6;
-       height: 200px; /* ★現在の 100px から「200px」に倍増させました */
-       overflow-y: scroll;
-       color: #66585A;
-       margin-top: 8px;
-       margin-bottom: 20px;
-   }
+.alert-text {
+    text-align: center;
+    font-weight: 500;
+    color: #D9534F;
+    margin-bottom: 24px;
+}
+
+.notes-box {
+    background-color: #FAFAFA;
+    border: 1px solid #EAE4E0;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    height: 200px;
+    overflow-y: scroll;
+    color: #66585A;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
+/* PDFダウンロードリンク */
+.pdf-download-link {
+    display: inline-block;
+    font-size: 12px;
+    color: #C5A880;
+    font-weight: 500;
+    border-bottom: 1px solid #C5A880;
+    padding-bottom: 1px;
+    transition: opacity 0.3s;
+}
+.pdf-download-link:hover {
+    opacity: 0.7;
+}
+
+/* 確定した予約内容ボックス */
+.summary-box {
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #FAF5F0;
+    padding: 24px;
+    border-radius: 4px;
+    border: 1px dashed #C5A880;
+}
+.summary-box h2 {
+    font-size: 14px;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+/* 完了メッセージ */
+.complete-message {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4A3B32;
+    margin-bottom: 8px;
+}
+.thanks-message {
+    margin-bottom: 32px;
+}
 
 /* ==========================================================================
    6. エラーメッセージ表示
    ========================================================================== */
 .error-message {
-    color: #D9534F; /* 高級感を崩さない落ち着いたディープレッド */
+    color: #D9534F;
     font-size: 12px;
     font-weight: 500;
-    margin-top: 4px;
+    margin-top: 0;
     margin-bottom: 16px;
     display: block;
 }
@@ -308,14 +370,14 @@ input[type="email"]:focus {
    ========================================================================== */
 .btn-container {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 25px;
 }
 .btn-submit,
 input[type="submit"] {
     display: inline-block;
     width: 100%;
     max-width: 320px;
-    background: #4A3B32; /* シックなブラウングレー */
+    background: #4A3B32;
     color: #FFFFFF;
     padding: 16px;
     font-size: 14px;
@@ -328,7 +390,7 @@ input[type="submit"] {
 }
 .btn-submit:hover,
 input[type="submit"]:not(:disabled):hover {
-    background: #C5A880; /* ゴールドベージュ */
+    background: #C5A880;
     box-shadow: 0 4px 15px rgba(197, 168, 128, 0.3);
 }
 

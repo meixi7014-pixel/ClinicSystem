@@ -18,7 +18,7 @@
             <span class="en">Confirmation</span>
         </div>
 
-        <p style="text-align: center; font-weight: 500; color: #D9534F; margin-bottom: 24px;">まだ予約は完了しておりません</p>
+        <p class="alert-text">まだ予約は完了しておりません</p>
         
         <h2>ご希望の予約内容</h2>
         <h3>ご希望のクリニック</h3>
@@ -52,18 +52,12 @@
             4. 免責事項<br>・本サイトは学校の課題用に構築された模擬システムであり、登場するクリニック、規約、サービス等はすべて架空のものです。実際の予約・契約・医療行為は発生いたしません。
         </div>
 		
-		<a th:href="@{/pdf/parental_consent.pdf}" target="_blank" rel="noopener noreferrer" 
-
-		   style="display: inline-block; font-size: 12px; color: #C5A880; font-weight: 500; border-bottom: 1px solid #C5A880; padding-bottom: 1px; transition: opacity 0.3s;"
-
-		   onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-
+		<a th:href="@{/pdf/parental_consent.pdf}" target="_blank" rel="noopener noreferrer" class="pdf-download-link">
 		    ▸ 親権者同意書をダウンロード（PDF）
-
 		</a>
         
         <form th:action="@{/reservation/complete}" method="POST">
-            <div style="text-align: center;">
+            <div class="checkbox-container">
                 <label class="checkbox-label">
                     <input type="checkbox" id="agree-check">上記注意事項に同意する
                 </label>

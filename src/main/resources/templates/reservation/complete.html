@@ -12,24 +12,24 @@
     <link rel="stylesheet" th:href="@{/css/reservation/style.css}">
 </head>
 <body>
-    <div class="container" style="text-align: center;">
+    <div class="container text-center">
         <div class="main-title">
             <h1>予約の確定</h1>
             <span class="en">Reservation Completed</span>
         </div>
         
-        <p style="font-size: 16px; font-weight: 500; color: #4A3B32; margin-bottom: 8px;">予約が確定しました</p>
-        <p style="margin-bottom: 32px;">ご予約ありがとうございました。<br>ご来院を心よりお待ちしております。</p>
+        <p class="complete-message">予約が確定しました</p>
+        <p class="thanks-message">ご予約ありがとうございました。<br>ご来院を心よりお待ちしております。</p>
         
-        <div style="text-align: left; max-width: 400px; margin: 0 auto; background-color: #FAF5F0; padding: 24px; border-radius: 4px; border: 1px dashed #C5A880;">
-            <h2 style="font-size: 14px; padding-bottom: 8px; margin-bottom: 16px;">確定したご予約内容</h2>
+        <div class="summary-box">
+            <h2>確定したご予約内容</h2>
             <p>ご希望のクリニック：<span th:text="${completeClinic}">新宿院</span></p>
             <p>ご希望の日程：<span th:text="${#temporals.format(completeReservation.reservedAt, 'yyyy年MM月dd日')}">2026年06月26日</span></p>
             <p>ご希望の時間：<span th:text="${#temporals.format(completeReservation.reservedAt, 'HH:mm～（1時間）')}">14:00～（1時間）</span></p>
         </div>
         
-        <div class="link-back-container" style="margin-top: 40px;">
-            <a th:href="@{/reservation}" class="link-back" style="font-size: 14px;">トップページへ戻る</a>
+        <div class="link-back-container mt-40">
+            <a th:href="@{/reservation}" class="link-back fs-14">トップページへ戻る</a>
         </div>
     </div>
 </body>
