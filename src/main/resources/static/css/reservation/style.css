@@ -80,9 +80,9 @@ h2 {
     color: #4A3B32;
     letter-spacing: 0.08em;
     border-bottom: 1px solid #EAE4E0;
-    padding-bottom: 12px;
-    margin-top: 0;
-    margin-bottom: 20px;
+    padding-bottom: 5px;
+    margin-top: 15px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
