@@ -1,6 +1,7 @@
 package com.example.app.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,9 @@ public class ReservationService {
 	//メールアドレスの重複チェック
 	public boolean isEmailExists(String email) {
 		return customerMapper.countByEmail(email) > 0;
+	}
+
+	public List<String> getReservedTimesByDate(String targetDate) {
+		return reservationMapper.findReservedTimesByDate(targetDate);
 	}
 }

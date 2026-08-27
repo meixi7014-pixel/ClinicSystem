@@ -39,6 +39,13 @@
     LIMIT 1
   </select>
   
+  <select id="findReservedTimesByDate" parameterType="string" resultType="string">
+    SELECT DATE_FORMAT(reserved_at, '%H:%i') AS reservedTime
+    FROM `clinic_system_db`.`reservations`
+    WHERE DATE(reserved_at) = #{targetDate}
+      AND (status = 1 OR status IS NULL)
+</select>
+  
   <insert id="insertReservation" 
           parameterType="com.example.app.domain.Reservation">
           

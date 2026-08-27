@@ -56,42 +56,67 @@
         </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-    <script>
-      const clinicInputs = document.querySelectorAll('.clinic-input');
-      const dateSection = document.getElementById('date-section');
-      const timeSection = document.getElementById('time-section');
-      const submitBtn = document.getElementById('submit-btn');
-      const timeInputs = document.querySelectorAll('input[name="timeslot"]');
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	<script>
+	  const clinicInputs = document.querySelectorAll('.clinic-input');
+	  const dateSection = document.getElementById('date-section');
+	  const timeSection = document.getElementById('time-section');
+	  const submitBtn = document.getElementById('submit-btn');
+	  const timeInputs = document.querySelectorAll('input[name="timeslot"]');
+	  const tomorrow = new Date();
+	  tomorrow.setDate(tomorrow.getDate() + 1);
 
-      const maxValidDate = new Date();
-      maxValidDate.setDate(maxValidDate.getDate() + 45);
+	  const maxValidDate = new Date();
+	  maxValidDate.setDate(maxValidDate.getDate() + 45);
 
-      clinicInputs.forEach(input => {
-          input.addEventListener('change', () => {
-              dateSection.style.display = 'block';
-          });
-      });
+	  clinicInputs.forEach(input => {
+	      input.addEventListener('change', () => {
+	          dateSection.style.display = 'block';
+	      });
+	  });
 
-      flatpickr("#calendar-input", {
-        locale: "ja",
-        inline: true,
-        minDate: tomorrow,
-        maxDate: maxValidDate,
-        dateFormat: "Y-m-d",
-        onChange: function(selectedDates, dateStr, instance) {
-            timeSection.style.display = 'block';
-        }
-      });
+	  flatpickr("#calendar-input", {
+	    locale: "ja",
+	    inline: true,
+	    minDate: tomorrow,
+	    maxDate: maxValidDate,
+	    dateFormat: "Y-m-d",
+	    onChange: function(selectedDates, dateStr, instance) {
+	        // 時間選択状態とボタンのアクティブ状態をリセット
+	        timeInputs.forEach(input => input.checked = false);
+	        submitBtn.classList.remove('active');
 
-      timeInputs.forEach(input => {
-          input.addEventListener('change', () => {
-              submitBtn.classList.add('active');
-          });
-      });
-    </script>
+	        // 非同期で選択した日付の予約状況を取得
+	        fetch(`/reservation/api/reserved-times?date=${dateStr}`)
+	            .then(response => response.json())
+	            .then(reservedTimes => {
+	                timeInputs.forEach(input => {
+	                    const timeLabel = input.closest('.time-label');
+	                    
+	                    if (reservedTimes.includes(input.value)) {
+	                        // 予約済みの場合はクリック不可＆グレーアウト化
+	                        input.disabled = true;
+	                        timeLabel.classList.add('disabled');
+	                    } else {
+	                        // 空いている場合は通常状態に戻す
+	                        input.disabled = false;
+	                        timeLabel.classList.remove('disabled');
+	                    }
+	                });
+	                timeSection.style.display = 'block';
+	            })
+	            .catch(error => {
+	                console.error('予約データの取得に失敗しました:', error);
+	            });
+	    }
+	  });
+
+	  timeInputs.forEach(input => {
+	      input.addEventListener('change', () => {
+	          submitBtn.classList.add('active');
+	      });
+	  });
+	</script>
 </body>
 </html>

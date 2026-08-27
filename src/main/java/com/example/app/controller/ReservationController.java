@@ -1,6 +1,7 @@
 package com.example.app.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.app.domain.Customer;
 import com.example.app.domain.Reservation;
@@ -153,6 +155,12 @@ public class ReservationController {
 		session.removeAttribute("selectedClinic");
 
 		return "reservation/complete";
+	}
+
+	@GetMapping("/api/reserved-times")
+	@ResponseBody
+	public List<String> getReservedTimes(@RequestParam("date") String date) {
+		return reservationService.getReservedTimesByDate(date);
 	}
 
 }
